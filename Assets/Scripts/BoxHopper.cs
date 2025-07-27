@@ -10,7 +10,7 @@ namespace BoxCorp
         [SerializeField] private Color scoreColor = Color.green;
         [SerializeField] private Color incorrectColor = Color.red;
 
-        private Coroutine scoredCoroutine;
+        private Coroutine lightCoroutine;
 
         private void Start()
         {
@@ -23,30 +23,30 @@ namespace BoxCorp
             {
                 if (grabbable.GetGrabbableType() == GrabbableType.Box)
                 {
-                    if (scoredCoroutine != null)
+                    if (lightCoroutine != null)
                     {
-                        StopCoroutine(scoredCoroutine);
+                        StopCoroutine(lightCoroutine);
                     }
-                    scoredCoroutine = StartCoroutine(LightCoroutine(scoreColor));
+                    lightCoroutine = StartCoroutine(LightCoroutine(scoreColor));
 
                     GameManager.Instance.Scored();
                 }
                 else
                 {
-                    if (scoredCoroutine != null)
+                    if (lightCoroutine != null)
                     {
-                        StopCoroutine(scoredCoroutine);
+                        StopCoroutine(lightCoroutine);
                     }
-                    scoredCoroutine = StartCoroutine(LightCoroutine(incorrectColor));
+                    lightCoroutine = StartCoroutine(LightCoroutine(incorrectColor));
 
                     GameManager.Instance.InvalidItemInHopper();
                 }
 
-                StartCoroutine(SuckInBox(grabbable));
+                StartCoroutine(SuckInObject(grabbable));
             }
         }
 
-        private IEnumerator SuckInBox(PhysicsGrabbable grabbable)
+        private IEnumerator SuckInObject(PhysicsGrabbable grabbable)
         {
             grabbable.SetCanGrab(false);
 

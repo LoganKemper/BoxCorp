@@ -1,7 +1,6 @@
 using System;
 using LoganKemper.Utilities;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace BoxCorp
 {
@@ -14,7 +13,6 @@ namespace BoxCorp
 
         [SerializeField] private int boostThreshold = 5;
         [SerializeField] private int rewardThreshold = 10;
-        [Space(20), SerializeField] private UnityEvent onRewardEvent;
 
         private int score = 0;
 
@@ -30,7 +28,6 @@ namespace BoxCorp
             else if (score == rewardThreshold)
             {
                 OnRewardThreshold?.Invoke();
-                onRewardEvent.Invoke();
             }
         }
 
