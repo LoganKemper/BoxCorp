@@ -54,7 +54,7 @@ MonoBehaviour:
   ungrabbledDamping: 1
   dustParticlesPrefab: {fileID: 8183155800413182617, guid: 827b746d4d1f71646a5cb4cfab9ba0a3, type: 3}
   smallDustParticlesPrefab: {fileID: 7009121354583602671, guid: de6dc6b4ba588b2459c56d08655364db, type: 3}
-  forceThreshold: 5
+  forceThreshold: 7.5
   particlesInterval: 0.5
 --- !u!54 &9043442031447291191
 Rigidbody:
