@@ -110,7 +110,11 @@ namespace BoxCorp
             RectTransform rect = renderImage.rectTransform;
 
             // Convert mouse position to local raw image coordinates
-            if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(rect, Input.mousePosition, null, out Vector2 localPoint))
+            if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                rect, 
+                Input.mousePosition, 
+                null, 
+                out Vector2 localPoint))
             {
                 return new Ray(Vector3.zero, Vector3.forward);
             }
@@ -175,7 +179,11 @@ namespace BoxCorp
             // 1. Get local coordinates relative to the raw image
             RectTransform rect = renderImage.rectTransform;
 
-            if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(rect, Input.mousePosition, null, out Vector2 localPoint))
+            if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                rect, 
+                Input.mousePosition, 
+                null, 
+                out Vector2 localPoint))
             {
                 return Vector3.zero;
             }
