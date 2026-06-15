@@ -10,5 +10,7 @@ namespace BoxCorp
         public float shakeAngle = 15f;
         public AnimationCurve scaleCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
         public AnimationCurve rotationCurve = AnimationCurve.EaseInOut(0, 0, 1, 0);
+        public AudioClip audioClip;
+        public float volume = 1f;
     }
 }

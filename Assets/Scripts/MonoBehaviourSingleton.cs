@@ -1,9 +1,9 @@
 using UnityEngine;
 
-namespace LoganKemper.Utilities
+namespace BoxCorp
 {
     /// <summary>
-    /// A simple singleton base class for MonoBehaviours that are manually placed in the scene.
+    /// A simple singleton base class for MonoBehaviours.
     /// </summary>
     public abstract class MonoBehaviourSingleton<T> : MonoBehaviour where T : MonoBehaviour
     {
@@ -11,22 +11,20 @@ namespace LoganKemper.Utilities
 
         protected virtual void Awake()
         {
-            // If no instance exists, this becomes the instance
             if (Instance == null)
             {
                 Instance = this as T;
             }
-            // If an instance already exists and it's not this one, destroy this GameObject
             else if (Instance != this)
             {
-                Debug.LogWarning($"[{typeof(T).Name}] Duplicate instance detected, destroying {gameObject.name}");
-                Destroy(gameObject);
+                Debug.LogWarning(
+                    $"[{typeof(T).Name}] Duplicate detected. Destroying instance on {gameObject.name}.");
+                Destroy(this);
             }
         }
 
         protected virtual void OnDestroy()
         {
-            // Clear the instance reference if this was the singleton instance
             if (Instance == this)
             {
                 Instance = null;

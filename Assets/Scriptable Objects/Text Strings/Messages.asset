@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c6c12b85f7e7b54cab80c1d0bc10461, type: 3}
+  m_Name: Messages
+  m_EditorClassIdentifier: Assembly-CSharp::BoxCorp.ComputerScreenMessages
+  scoreMessage: NICE SHOT
+  altScoreMessages:
+  - WHAT A SHOT !
+  - GOOD ONE
+  - SICKO
+  - KILLIN IT
+  - FOR THREE !!!
+  - MID SHOT TBH :|
+  invalidMessage: UNEX PECTED ITEM IN HOPPER !!!!
+  idleMessage: WORK HARD ER!!
+  ticklingMessages:
+  - STOP TICK LING HIM
+  - IGNORE HIM
+  - STOP THAT
+  stopTouchingMessage: HANDS OFF
+  scorePrefix: 'Boxes: '
+  boosting: Great start! Box Boosting unlocked!  (Right-click)
+  bowling: Great work! Dispersing Employee Enrichment...
+  dirt: Uh oh! These next boxes look dirty...
+  pigSpawned: The Beast has been unleashed!!
+  pigDefeated: The Beast has been vanquished...
+  bigScore: The shareholders are pleased!

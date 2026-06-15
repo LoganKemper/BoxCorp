@@ -4,6 +4,6 @@ namespace BoxCorp
 {
     public interface IClickable
     {
-        public void OnClick();
+        public void OnClick(Vector3 clickPoint);
     }
 }

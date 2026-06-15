@@ -1,26 +1,26 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 namespace BoxCorp
 {
     public class MenuController : MonoBehaviour
     {
-        [Header("UIs")]
-        [SerializeField] private GameObject gameUI;
-        [SerializeField] private GameObject pauseUI;
-        [SerializeField] private GameObject startUI;
+        public static bool GameIsPaused { get; private set; }
+        public static bool GameStarted { get; private set; }
 
-        [Header("Start Screens")]
-        [SerializeField] private GameObject startScreen1;
-        [SerializeField] private GameObject startScreen2;
+        [Header("Screens")]
+        [SerializeField] private StartUI _startUI;
+        [SerializeField] private GameUI _gameUI;
+        [SerializeField] private PauseUI _pauseUI;
+        [SerializeField] private GameOverUI _gameOverUI;
 
-        [Header("Start Screen Buttons")]
-        [SerializeField] private Button nextButton;
-        [SerializeField] private Button startButton;
+        [Header("Pause Toggle")]
+        [SerializeField] private MenuButton _pauseButton;
+        [SerializeField] private MenuButton _unpauseButton;
 
-        public static bool GameIsPaused { get; private set; } = false;
-        public static bool GameStarted { get; private set; } = false;
+        [Header("Audio")]
+        [SerializeField] private AudioClip _pauseSound;
 
         private void Start()
         {
@@ -28,66 +28,96 @@ namespace BoxCorp
             GameIsPaused = true;
             GameStarted = false;
 
-            gameUI.SetActive(false);
-            pauseUI.SetActive(false);
-            startUI.SetActive(true);
+            _startUI.OnStartGame += StartGame;
+            _pauseUI.OnResumeGame += () => SetPause(false);
+            _pauseUI.OnResetGame += ReloadScene;
+            _gameOverUI.OnResetGame += ReloadScene;
 
-            ShowStartScreen1();
+            _pauseButton.OnClick += () => SetPause(true);
+            _unpauseButton.OnClick += () => SetPause(false);
 
-            nextButton.onClick.AddListener(ShowStartScreen2);
-            startButton.onClick.AddListener(StartGame);
+            GameManager.Instance.OnGameOver += HandleGameOver;
 
-            GameIsPaused = true;
-            GameStarted = false;
+            _gameUI.Init();
+            _pauseUI.Init();
+            _gameOverUI.Init();
+            _startUI.Init();
+        }
+
+        private void OnDestroy()
+        {
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.OnGameOver -= HandleGameOver;
+            }
         }
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape) && GameStarted)
+            Keyboard keyboard = Keyboard.current;
+            if (keyboard == null)
             {
-                TogglePaused();
+                return;
             }
-            else if (Input.GetKeyDown(KeyCode.R) && GameIsPaused)
+
+            if ((keyboard.escapeKey.wasPressedThisFrame || keyboard.pKey.wasPressedThisFrame) && GameStarted)
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                SetPause(!GameIsPaused);
+            }
+            else if (keyboard.rKey.wasPressedThisFrame && GameIsPaused)
+            {
+                ReloadScene();
             }
         }
 
-        private void TogglePaused()
+        private void ReloadScene()
         {
-            SetPause(!GameIsPaused);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
-        private void SetPause(bool pause)
+        private void SetPause(bool pause, bool playSound = true)
         {
             GameIsPaused = pause;
             Time.timeScale = pause ? 0f : 1f;
 
-            gameUI.SetActive(!pause);
-            pauseUI.SetActive(pause);
-        }
+            if (pause)
+            {
+                _gameUI.Hide();
+                _pauseUI.Show();
+            }
+            else
+            {
+                _pauseUI.Hide();
+                _gameUI.Show();
+            }
 
-        private void ShowStartScreen1()
-        {
-            startScreen1.SetActive(true);
-            startScreen2.SetActive(false);
-        }
+            _pauseButton.gameObject.SetActive(!pause);
+            _unpauseButton.gameObject.SetActive(pause);
 
-        private void ShowStartScreen2()
-        {
-            startScreen1.SetActive(false);
-            startScreen2.SetActive(true);
+            if (playSound && _pauseSound != null)
+            {
+                AudioManager.Instance.PlaySFX2D(_pauseSound, 0.8f, pause ? 0.8f : 1.2f);
+            }
         }
 
         private void StartGame()
         {
             GameStarted = true;
 
-            SetPause(false);
+            _startUI.Hide();
+            SetPause(false, playSound: false);
+        }
 
-            gameUI.SetActive(true);
-            pauseUI.SetActive(false);
-            startUI.SetActive(false);
+        private void HandleGameOver()
+        {
+            GameStarted = false;
+            GameIsPaused = true;
+            Time.timeScale = 0f;
+
+            _gameUI.Hide();
+            _pauseUI.Hide();
+            _startUI.Hide();
+            _gameOverUI.Show();
         }
     }
 }

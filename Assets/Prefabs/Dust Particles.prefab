@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3584465036869127171}
-  - component: {fileID: 4773855733220074620}
+  - component: {fileID: 5294679958606265605}
   - component: {fileID: 6264362786952390217}
   - component: {fileID: 529596705469480310}
   m_Layer: 0
@@ -34,7 +34,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!114 &4773855733220074620
+--- !u!114 &5294679958606265605
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -43,10 +43,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8183155800413182617}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51a30b87be400304697de10a083d339f, type: 3}
+  m_Script: {fileID: 11500000, guid: e1c2d3b4a5968778695a4b3c2d1e0f92, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  lifetime: 2
+  m_EditorClassIdentifier: Assembly-CSharp::BoxCorp.PooledParticle
+  _particleSystem: {fileID: 6264362786952390217}
 --- !u!198 &6264362786952390217
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -55,9 +55,9 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8183155800413182617}
   serializedVersion: 8
-  lengthInSec: 5
+  lengthInSec: 2
   simulationSpeed: 1
-  stopAction: 0
+  stopAction: 3
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
@@ -4839,7 +4839,7 @@ ParticleSystem:
     vectorLabel1_3: W
 --- !u!199 &529596705469480310
 ParticleSystemRenderer:
-  serializedVersion: 6
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -4858,6 +4858,8 @@ ParticleSystemRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4879,9 +4881,11 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_RenderMode: 4
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -4913,4 +4917,3 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
-  m_MaskInteraction: 0

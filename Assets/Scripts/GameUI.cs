@@ -1,89 +1,139 @@
-using BoxCorp;
 using System.Collections;
 using TMPro;
 using UnityEngine;
 
 namespace BoxCorp
 {
-    public class GameUI : MonoBehaviour
+    public class GameUI : MonoBehaviour, IUIScreen
     {
-        [SerializeField] private TMP_Text scoreText;
-        [SerializeField] private UIAnimation scoreAnimation;
-        [SerializeField] private TMP_Text infoText;
-        [SerializeField] private UIAnimation infoAnimation;
-        [SerializeField] private string scorePrefix = "Boxes: ";
-        [SerializeField] private string boostMessage;
-        [SerializeField] private string rewardMessage;
+        private static readonly WaitForSeconds WAIT_CHAR_DELAY = new(0.01f);
+        private static readonly WaitForSeconds WAIT_TEXT_LIFETIME = new(5f);
 
-        private Coroutine typeCoroutine;
+        [SerializeField] private Messages _messages;
+        [SerializeField] private TMP_Text _scoreText;
+        [SerializeField] private UIAnimation _scoreAnimation;
+        [SerializeField] private TMP_Text _infoText;
+        [SerializeField] private UIAnimation _infoAnimation;
+
+        private Coroutine _typingCoroutine;
+
+        public bool IsVisible => gameObject.activeSelf;
 
         private void Start()
         {
-            if (GameManager.Instance != null)
-            {
-                GameManager.Instance.OnScore += OnScore;
-                GameManager.Instance.OnBoostThreshold += OnBoostThreshold;
-                GameManager.Instance.OnRewardThreshold += OnRewardThreshold;
-            }
+            GameManager.Instance.OnScored += HandleScored;
+            GameManager.Instance.OnBoostThresholdReached += HandleBoostThresholdReached;
+            GameManager.Instance.OnRewardThresholdReached += HandleRewardThresholdReached;
+            GameManager.Instance.OnDirtThresholdReached += HandleDirtThresholdReached;
+            GameManager.Instance.OnPigThresholdReached += HandlePigThresholdReached;
+            GameManager.Instance.OnPigDefeated += HandlePigDefeated;
+            GameManager.Instance.OnBigScoreThresholdReached += HandleBigScoreThresholdReached;
 
-            infoText.gameObject.SetActive(false);
+            _infoText.gameObject.SetActive(false);
         }
 
         private void OnDestroy()
         {
             if (GameManager.Instance != null)
             {
-                GameManager.Instance.OnScore -= OnScore;
-                GameManager.Instance.OnBoostThreshold -= OnBoostThreshold;
-                GameManager.Instance.OnRewardThreshold -= OnRewardThreshold;
+                GameManager.Instance.OnScored -= HandleScored;
+                GameManager.Instance.OnBoostThresholdReached -= HandleBoostThresholdReached;
+                GameManager.Instance.OnRewardThresholdReached -= HandleRewardThresholdReached;
+                GameManager.Instance.OnDirtThresholdReached -= HandleDirtThresholdReached;
+                GameManager.Instance.OnPigThresholdReached -= HandlePigThresholdReached;
+                GameManager.Instance.OnPigDefeated -= HandlePigDefeated;
+                GameManager.Instance.OnBigScoreThresholdReached -= HandleBigScoreThresholdReached;
             }
         }
 
-        private void OnScore(int newScore)
+        public void Init()
         {
-            scoreText.text = scorePrefix + newScore;
-            scoreAnimation.PlayAnimation();
+            Hide();
         }
 
-        private void OnBoostThreshold()
+        public void Show()
         {
-            StartTextTyping(infoText, boostMessage);
-            infoAnimation.PlayAnimation();
+            gameObject.SetActive(true);
         }
 
-        private void OnRewardThreshold()
+        public void Hide()
         {
-            StartTextTyping(infoText, rewardMessage);
-            infoAnimation.PlayAnimation();
+            gameObject.SetActive(false);
+        }
+
+        private void HandleScored(int newScore)
+        {
+            _scoreText.text = _messages.scorePrefix + newScore;
+            _scoreAnimation.PlayAnimation();
+        }
+
+        private void HandleBoostThresholdReached()
+        {
+            StartTextTyping(_infoText, _messages.boosting);
+            _infoAnimation.PlayAnimation();
+        }
+
+        private void HandleRewardThresholdReached()
+        {
+            StartTextTyping(_infoText, _messages.bowling);
+            _infoAnimation.PlayAnimation();
+        }
+
+        private void HandleDirtThresholdReached()
+        {
+            StartTextTyping(_infoText, _messages.dirt);
+            _infoAnimation.PlayAnimation();
+        }
+
+        private void HandlePigThresholdReached()
+        {
+            StartTextTyping(_infoText, _messages.pigSpawned);
+            _infoAnimation.PlayAnimation();
+        }
+
+        private void HandlePigDefeated()
+        {
+            StartTextTyping(_infoText, _messages.pigDefeated);
+            _infoAnimation.PlayAnimation();
+        }
+
+        private void HandleBigScoreThresholdReached()
+        {
+            StartTextTyping(_infoText, _messages.bigScore);
+            _infoAnimation.PlayAnimation();
+            _scoreText.color = Color.gold;
         }
 
         private void StartTextTyping(TMP_Text textElement, string message)
         {
             textElement.gameObject.SetActive(true);
 
-            if (typeCoroutine != null)
+            if (_typingCoroutine != null)
             {
-                StopCoroutine(typeCoroutine);
+                StopCoroutine(_typingCoroutine);
             }
-            typeCoroutine = StartCoroutine(TypeTextCoroutine(textElement, message));
+            _typingCoroutine = StartCoroutine(TypeTextCoroutine(textElement, message));
         }
 
-        private IEnumerator TypeTextCoroutine(TMP_Text textElement, 
-            string message, 
-            float lifetime = 5f, 
-            float characterDelay = 0.01f)
+        private IEnumerator TypeTextCoroutine(TMP_Text textElement, string message)
         {
-            textElement.text = string.Empty;
+            textElement.raycastTarget = true;
+            textElement.maxVisibleCharacters = 0;
+            textElement.text = message;
+            textElement.ForceMeshUpdate();
+            int totalChars = textElement.textInfo.characterCount;
 
-            foreach (char c in message)
+            for (int visible = 1; visible <= totalChars; visible++)
             {
-                textElement.text += c;
+                textElement.maxVisibleCharacters = visible;
 
-                yield return new WaitForSeconds(characterDelay);
+                yield return WAIT_CHAR_DELAY;
             }
 
-            yield return new WaitForSeconds(lifetime);
+            yield return WAIT_TEXT_LIFETIME;
             textElement.text = string.Empty;
+            textElement.maxVisibleCharacters = int.MaxValue;
+            textElement.raycastTarget = false;
         }
     }
 }

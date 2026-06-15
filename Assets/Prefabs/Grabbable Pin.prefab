@@ -48,14 +48,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 533da892d3a3216409c4b9781afa99ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grabbableType: 1
-  gravityMultiplier: 2
-  grabbedDamping: 10
-  ungrabbledDamping: 1
-  dustParticlesPrefab: {fileID: 8183155800413182617, guid: 827b746d4d1f71646a5cb4cfab9ba0a3, type: 3}
-  smallDustParticlesPrefab: {fileID: 7009121354583602671, guid: de6dc6b4ba588b2459c56d08655364db, type: 3}
-  forceThreshold: 7.5
-  particlesInterval: 0.5
+  _rb: {fileID: 9043442031447291191}
+  _grabbableType: 2
+  _gravityMultiplier: 2
+  _grabbedDamping: 10
+  _ungrabbedDamping: 1
+  _centerOfMassOffset: {x: 0, y: 0, z: 0}
+  _selfRightingStrength: 0
+  _selfRightingDamping: 0.5
+  _forceThreshold: 7.5
+  _particlesInterval: 0.5
+  _dirt: {fileID: 0}
+  _dirtRemovedSound: {fileID: 0}
+  _dirtShakeThreshold: 30
+  _dirtKnockOffForce: 25
+  _grabSound: {fileID: 8300000, guid: ec60e1d5bf456e44195ba9b1f244d62c, type: 3}
+  _boostSound: {fileID: 8300000, guid: cd946a7dfed9f5745a182f8d1bf1bc49, type: 3}
+  _collisionSounds:
+  - {fileID: 8300000, guid: 21bdbcc3467ad5c40a141b52b596b708, type: 3}
+  - {fileID: 8300000, guid: b7a7c18ee2cfd7346899b8f7ff860dfd, type: 3}
+  _collisionSoundInterval: 0.2
+  _spinSound: {fileID: 8300000, guid: 21bdbcc3467ad5c40a141b52b596b708, type: 3}
+  _spinSoundMinPitch: 0.4
+  _spinSoundMaxPitch: 1.5
+  _spinSoundVolume: 0.125
 --- !u!54 &9043442031447291191
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -63,10 +79,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3047358648618797296}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -123,8 +139,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.9, y: 0.9, z: 0.9}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.6, y: 1, z: 0.6}
+  m_Center: {x: 0, y: -0.025, z: 0}
 --- !u!1001 &2215837654313545413
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -135,15 +151,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 346a5eec1ec81364d87bb6f31b14cbd8, type: 3}
       propertyPath: m_LocalScale.x
-      value: 23
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 346a5eec1ec81364d87bb6f31b14cbd8, type: 3}
       propertyPath: m_LocalScale.y
-      value: 23
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 346a5eec1ec81364d87bb6f31b14cbd8, type: 3}
       propertyPath: m_LocalScale.z
-      value: 23
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 346a5eec1ec81364d87bb6f31b14cbd8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -159,23 +175,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 346a5eec1ec81364d87bb6f31b14cbd8, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 346a5eec1ec81364d87bb6f31b14cbd8, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 346a5eec1ec81364d87bb6f31b14cbd8, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 346a5eec1ec81364d87bb6f31b14cbd8, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 346a5eec1ec81364d87bb6f31b14cbd8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 346a5eec1ec81364d87bb6f31b14cbd8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -188,7 +204,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 346a5eec1ec81364d87bb6f31b14cbd8, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: bb9cd54937df253468857cdf8c36cb29, type: 2}
+      objectReference: {fileID: 2100000, guid: 8828e5a9e0bf72f48a7234732af1e4d7, type: 2}
     - target: {fileID: 919132149155446097, guid: 346a5eec1ec81364d87bb6f31b14cbd8, type: 3}
       propertyPath: m_Name
       value: Bowling_Pin
